@@ -1,50 +1,264 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Consulte bancos brasileiros e instituições participantes do PIX com dados da BrasilAPI.">
-  <meta name="theme-color" content="#153e32">
-  <title>Consulta Brasil · Bancos e PIX</title>
-  <link rel="stylesheet" href="./css/style.css">
-  <script src="./js/script.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#consultas">Pular para as consultas</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="./index.html" aria-label="Consulta Brasil, início"><span class="brand-icon" aria-hidden="true">CB<span></span></span>Consulta Brasil</a>
-      <nav aria-label="Navegação principal"><a href="#bancos">Bancos</a><a href="#pix">PIX</a><a href="https://brasilapi.com.br/docs" target="_blank" rel="noopener noreferrer">BrasilAPI ↗</a></nav>
-    </div>
-  </header>
-  <main class="container" id="consultas">
-    <section class="hero" aria-labelledby="titulo">
-      <div><p class="eyebrow"><span aria-hidden="true"></span> SISTEMA FINANCEIRO, ACESSO SIMPLES</p><h1 id="titulo">Os bancos do Brasil,<br>mais perto de você.</h1><p class="hero-description">Encontre bancos e conheça os participantes do PIX.<br class="desktop-break"> Informações da BrasilAPI, em um só lugar.</p></div>
-      <div class="hero-note"><span class="note-symbol" aria-hidden="true">↗</span><p>Explore.<br>Consulte.<br><strong>Encontre.</strong></p><span class="note-caption">BANCOS & PIX</span></div>
-    </section>
-    <div class="section-heading" id="bancos"><div><p class="eyebrow">01 / SISTEMA BANCÁRIO</p><h2>Conheça os bancos do Brasil</h2></div><span class="section-label">Dados direto da fonte</span></div>
-    <section class="card bank-list" aria-labelledby="lista-titulo">
-      <div class="card-heading"><div><h3 id="lista-titulo">Lista de bancos</h3><p>Explore todas as instituições retornadas pela API.</p></div><button id="carregar-bancos" type="button">Carregar bancos <span aria-hidden="true">↓</span></button></div>
-      <p id="lista-status" class="status" role="status" aria-live="polite" aria-atomic="true">Clique em “Carregar bancos” para consultar a lista.</p>
-      <div id="lista-resultado" hidden><p id="quantidade" class="result-count"></p><div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de bancos, role para ver os resultados"><table><caption class="sr-only">Instituições bancárias retornadas pela BrasilAPI</caption><thead><tr><th scope="col">Código</th><th scope="col">Nome do banco</th><th scope="col">ISPB</th></tr></thead><tbody id="bancos-corpo"></tbody></table></div></div>
-    </section>
-    <div class="queries-grid">
-      <section class="card" aria-labelledby="banco-titulo">
-        <div class="card-kicker"><span aria-hidden="true">01.1</span> CONSULTA INDIVIDUAL</div><h3 id="banco-titulo">Qual é o banco?</h3><p>Use o código bancário para encontrar uma instituição.</p>
-        <form id="banco-form" novalidate><label for="codigo-banco">Código do banco</label><div class="input-row"><input id="codigo-banco" name="codigo" type="text" inputmode="numeric" autocomplete="off" placeholder="Ex.: 001" aria-describedby="banco-ajuda banco-status"><button id="buscar-banco" type="submit">Buscar banco <span aria-hidden="true">→</span></button></div><small id="banco-ajuda">Informe de 1 a 3 dígitos. Exemplo: 001 (Banco do Brasil).</small></form>
-        <p id="banco-status" class="status" role="status" aria-live="polite" aria-atomic="true">O banco consultado aparecerá aqui.</p>
-        <dl id="banco-resultado" class="result" hidden><div class="wide"><dt>Nome completo</dt><dd id="banco-nome"></dd></div><div><dt>Código</dt><dd id="banco-codigo"></dd></div><div><dt>ISPB</dt><dd id="banco-ispb"></dd></div></dl>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Consulte bancos brasileiros e instituições participantes do PIX com dados da BrasilAPI.">
+    <meta name="theme-color" content="#153e32">
+    <title>
+      Consulta Brasil · Bancos e PIX
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css?v=20261020-15">
+    <script src="./script.js?v=20261020-16" defer>
+    </script>
+  </head>
+  <body class="bg-light">
+    <a class="visually-hidden-focusable position-absolute top-0 start-0 bg-white p-2" href="#consultas">
+      Pular para as consultas
+    </a>
+    <main class="container py-4" id="consultas">
+      <section class="py-3 mb-4" aria-labelledby="titulo">
+        <div>
+          <h1 id="titulo" class="h2 text-success fw-bold">
+            Os bancos do Brasil,
+            
+            mais perto de você.
+          </h1>
+          <p class="text-secondary mb-0">
+            Encontre bancos e conheça os participantes do PIX.
+            
+            Informações da BrasilAPI, em um só lugar.
+          </p>
+        </div>
       </section>
-      <section class="card" id="pix" aria-labelledby="pix-titulo">
-        <div class="card-kicker"><span aria-hidden="true">02</span> SISTEMA DE PAGAMENTOS</div><h3 id="pix-titulo">Quem participa do PIX?</h3><p>Consulte as instituições participantes e seu tipo de participação. A lista inclui bancos e outras instituições de pagamento.</p>
-        <button class="pix-button" id="carregar-pix" type="button">Carregar participantes PIX <span aria-hidden="true">↓</span></button>
-        <p id="pix-status" class="status" role="status" aria-live="polite" aria-atomic="true">Clique em “Carregar participantes PIX” para consultar.</p>
-        <div id="pix-resultado" hidden><p id="pix-quantidade" class="result-count"></p><div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de participantes do PIX, role para ver os resultados"><table><caption class="sr-only">Instituições participantes do PIX retornadas pela BrasilAPI</caption><thead><tr><th scope="col">Instituição</th><th scope="col">ISPB</th><th scope="col">Participação</th><th scope="col">Modalidade</th></tr></thead><tbody id="pix-corpo"></tbody></table></div></div>
+      <div class="mb-3" id="bancos">
+        <div>
+          <h2 class="h4">
+            Conheça os bancos do Brasil
+          </h2>
+        </div>
+      </div>
+      <section class="card p-3 p-md-4 mb-4" aria-labelledby="lista-titulo">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <h3 class="h5" id="lista-titulo">
+              Lista de bancos
+            </h3>
+            <p>
+              Explore todas as instituições retornadas pela API.
+            </p>
+          </div>
+          <button class="btn btn-outline-success flex-shrink-0" id="listar-bancos" type="button">Listar todos os bancos</button>
+        </div>
+        <form class="mt-3" id="nome-banco-form" role="search">
+          <label class="form-label fw-semibold" for="nome-banco">
+            Pesquisar pelo nome do banco
+          </label>
+          <div class="d-flex flex-column flex-sm-row gap-2">
+            <input class="form-control" id="nome-banco" type="search" placeholder="Ex.: Itaú, Caixa ou Sicredi" aria-describedby="nome-banco-ajuda lista-status">
+            <button class="btn btn-success flex-shrink-0" id="buscar-nome-banco" type="submit">
+              Pesquisar nome
+            </button>
+          </div>
+          <small class="form-text d-block" id="nome-banco-ajuda">
+            Digite o nome completo ou uma parte dele. Apague a pesquisa para ver todos os bancos.
+          </small>
+        </form>
+        <p id="lista-status" class="status alert alert-secondary mt-3 mb-0" role="status" aria-live="polite" aria-atomic="true">
+          Pesquise pelo nome ou clique em Listar todos os bancos.
+        </p>
+        <div id="lista-resultado" hidden>
+          <p id="quantidade" class="fw-semibold mt-3 mb-2">
+          </p>
+          <div class="table-responsive border rounded mt-2" tabindex="0" role="region" aria-label="Tabela de bancos, role para ver os resultados">
+            <table class="table table-striped table-hover align-middle mb-0">
+              <caption class="visually-hidden">
+                Instituições bancárias retornadas pela BrasilAPI
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Código
+                  </th>
+                  <th scope="col">
+                    Nome do banco
+                  </th>
+                  <th scope="col">
+                    ISPB
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="bancos-corpo">
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
-    </div>
-    <aside class="source-note"><span aria-hidden="true">ⓘ</span><p>Informação pública, consulta consciente. Os resultados vêm da <a href="https://brasilapi.com.br/" target="_blank" rel="noopener noreferrer">BrasilAPI</a> e dependem da disponibilidade do serviço.</p></aside>
-    <noscript><p class="status" data-state="error">Ative o JavaScript no navegador para fazer as consultas.</p></noscript>
-  </main>
-  <footer><div class="container footer-inner"><span class="footer-brand">Consulta Brasil<span aria-hidden="true"> ✦</span></span><p>Bruno Henrique Siemer | FDW | Avaliação A1.2 — Parte 1 | 2026.2</p></div></footer>
-</body>
+      <div class="d-flex flex-column flex-lg-row gap-lg-4">
+        <section class="card p-3 p-md-4 mb-4 flex-fill w-100" aria-labelledby="banco-titulo">
+          <h3 class="h5" id="banco-titulo">
+            Qual é o banco?
+          </h3>
+          <p>
+            Use o código bancário para encontrar uma instituição.
+          </p>
+          <form class="mt-3" id="banco-form" novalidate>
+            <label class="form-label fw-semibold" for="codigo-banco">
+              Código do banco
+            </label>
+            <div class="d-flex flex-column flex-sm-row gap-2">
+              <input class="form-control" id="codigo-banco" name="codigo" type="text" inputmode="numeric" autocomplete="off" placeholder="Ex.: 001" aria-describedby="banco-ajuda banco-status">
+              <button class="btn btn-success flex-shrink-0" id="buscar-banco" type="submit">
+                Buscar banco
+                <span aria-hidden="true">
+                  →
+                </span>
+              </button>
+            </div>
+            <small class="form-text d-block" id="banco-ajuda">
+              Informe de 1 a 3 dígitos. Exemplo: 001 (Banco do Brasil).
+            </small>
+          </form>
+          <p id="banco-status" class="status alert alert-secondary mt-3 mb-0" role="status" aria-live="polite" aria-atomic="true">
+            O banco consultado aparecerá aqui.
+          </p>
+          <dl id="banco-resultado" class="bg-light rounded p-3 mt-3 mb-0" hidden>
+            <div class="mb-2">
+              <dt>
+                Nome completo
+              </dt>
+              <dd id="banco-nome">
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Código
+              </dt>
+              <dd id="banco-codigo">
+              </dd>
+            </div>
+            <div>
+              <dt>
+                ISPB
+              </dt>
+              <dd id="banco-ispb">
+              </dd>
+            </div>
+          </dl>
+        </section>
+        <section class="card" id="pix" aria-labelledby="pix-titulo">
+          <h3 class="h5" id="pix-titulo">
+            Quem participa do PIX?
+          </h3>
+          <p>
+            Consulte as instituições participantes e seu tipo de participação. A lista inclui bancos e outras instituições de pagamento.
+          </p>
+          <button class="btn btn-success mt-3 align-self-start"  id="carregar-pix" type="button">
+            Carregar participantes PIX
+            <span aria-hidden="true">
+              ↓
+            </span>
+          </button>
+          <p id="pix-status" class="status alert alert-secondary mt-3 mb-0" role="status" aria-live="polite" aria-atomic="true">
+            Clique em “Carregar participantes PIX” para consultar.
+          </p>
+          <div id="pix-resultado" hidden>
+            <p id="pix-quantidade" class="fw-semibold mt-3 mb-2">
+            </p>
+            <div class="table-responsive border rounded mt-2" tabindex="0" role="region" aria-label="Tabela de participantes do PIX, role para ver os resultados">
+              <table class="table table-striped table-hover align-middle mb-0">
+                <caption class="visually-hidden">
+                  Instituições participantes do PIX retornadas pela BrasilAPI
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      Instituição
+                    </th>
+                    <th scope="col">
+                      ISPB
+                    </th>
+                    <th scope="col">
+                      Participação
+                    </th>
+                    <th scope="col">
+                      Modalidade
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="pix-corpo">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section class="card p-3 p-md-4 mb-4" id="logs" aria-labelledby="logs-titulo">
+        <h2 id="logs-titulo" class="h4">
+          Logs de consumo da API
+        </h2>
+        <p>
+          Informe sua matrícula Unoesc para registrar as próximas consultas e acessar seu histórico.
+        </p>
+        <form class="mt-3" id="matricula-form" novalidate>
+          <label class="form-label fw-semibold" for="matricula">
+            Matrícula Unoesc
+          </label>
+          <div class="d-flex flex-column flex-sm-row gap-2">
+            <input class="form-control" id="matricula" name="matricula" inputmode="numeric" autocomplete="off" placeholder="Sua matrícula" aria-describedby="matricula-status">
+            <button class="btn btn-success flex-shrink-0" id="salvar-matricula" type="submit">
+              Salvar matrícula
+            </button>
+          </div>
+        </form>
+        <p id="matricula-status" class="status alert alert-secondary mt-3 mb-0" role="status" aria-live="polite">
+          Configure sua matrícula antes de consultar para gravar os logs.
+        </p>
+        <button class="btn btn-success mt-3 align-self-start" id="carregar-logs"  type="button">
+          Atualizar logs
+        </button>
+        <p id="logs-status" class="status alert alert-secondary mt-3 mb-0" role="status" aria-live="polite" aria-atomic="true">
+          O histórico será exibido aqui.
+        </p>
+        <div id="logs-resultado" hidden>
+          <p id="logs-quantidade" class="fw-semibold mt-3 mb-2">
+          </p>
+          <div class="table-responsive border rounded mt-2" tabindex="0" role="region" aria-label="Histórico de logs">
+            <table class="table table-striped table-hover align-middle mb-0">
+              <caption class="visually-hidden">
+                Logs registrados na API do professor
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Data e hora
+                  </th>
+                  <th scope="col">
+                    API
+                  </th>
+                  <th scope="col">
+                    Método
+                  </th>
+                  <th scope="col">
+                    Resultado
+                  </th>
+                  <th scope="col">
+                    Ação
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="logs-corpo">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <noscript>
+        <p class="status alert alert-secondary mt-3 mb-0" data-state="error">
+          Ative o JavaScript no navegador para fazer as consultas.
+        </p>
+      </noscript>
+    </main>
+  </body>
 </html>
