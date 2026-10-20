@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulte bancos brasileiros e instituições participantes do PIX com dados da BrasilAPI.">
+  <meta name="theme-color" content="#153e32">
+  <title>Consulta Brasil · Bancos e PIX</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#consultas">Pular para as consultas</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html" aria-label="Consulta Brasil, início"><span class="brand-icon" aria-hidden="true">CB<span></span></span>Consulta Brasil</a>
+      <nav aria-label="Navegação principal"><a href="#bancos">Bancos</a><a href="#pix">PIX</a><a href="https://brasilapi.com.br/docs" target="_blank" rel="noopener noreferrer">BrasilAPI ↗</a></nav>
+    </div>
+  </header>
+  <main class="container" id="consultas">
+    <section class="hero" aria-labelledby="titulo">
+      <div><p class="eyebrow"><span aria-hidden="true"></span> SISTEMA FINANCEIRO, ACESSO SIMPLES</p><h1 id="titulo">Os bancos do Brasil,<br>mais perto de você.</h1><p class="hero-description">Encontre bancos e conheça os participantes do PIX.<br class="desktop-break"> Informações da BrasilAPI, em um só lugar.</p></div>
+      <div class="hero-note"><span class="note-symbol" aria-hidden="true">↗</span><p>Explore.<br>Consulte.<br><strong>Encontre.</strong></p><span class="note-caption">BANCOS & PIX</span></div>
+    </section>
+    <div class="section-heading" id="bancos"><div><p class="eyebrow">01 / SISTEMA BANCÁRIO</p><h2>Conheça os bancos do Brasil</h2></div><span class="section-label">Dados direto da fonte</span></div>
+    <section class="card bank-list" aria-labelledby="lista-titulo">
+      <div class="card-heading"><div><h3 id="lista-titulo">Lista de bancos</h3><p>Explore todas as instituições retornadas pela API.</p></div><button id="carregar-bancos" type="button">Carregar bancos <span aria-hidden="true">↓</span></button></div>
+      <p id="lista-status" class="status" role="status" aria-live="polite" aria-atomic="true">Clique em “Carregar bancos” para consultar a lista.</p>
+      <div id="lista-resultado" hidden><p id="quantidade" class="result-count"></p><div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de bancos, role para ver os resultados"><table><caption class="sr-only">Instituições bancárias retornadas pela BrasilAPI</caption><thead><tr><th scope="col">Código</th><th scope="col">Nome do banco</th><th scope="col">ISPB</th></tr></thead><tbody id="bancos-corpo"></tbody></table></div></div>
+    </section>
+    <div class="queries-grid">
+      <section class="card" aria-labelledby="banco-titulo">
+        <div class="card-kicker"><span aria-hidden="true">01.1</span> CONSULTA INDIVIDUAL</div><h3 id="banco-titulo">Qual é o banco?</h3><p>Use o código bancário para encontrar uma instituição.</p>
+        <form id="banco-form" novalidate><label for="codigo-banco">Código do banco</label><div class="input-row"><input id="codigo-banco" name="codigo" type="text" inputmode="numeric" autocomplete="off" placeholder="Ex.: 001" aria-describedby="banco-ajuda banco-status"><button id="buscar-banco" type="submit">Buscar banco <span aria-hidden="true">→</span></button></div><small id="banco-ajuda">Informe de 1 a 3 dígitos. Exemplo: 001 (Banco do Brasil).</small></form>
+        <p id="banco-status" class="status" role="status" aria-live="polite" aria-atomic="true">O banco consultado aparecerá aqui.</p>
+        <dl id="banco-resultado" class="result" hidden><div class="wide"><dt>Nome completo</dt><dd id="banco-nome"></dd></div><div><dt>Código</dt><dd id="banco-codigo"></dd></div><div><dt>ISPB</dt><dd id="banco-ispb"></dd></div></dl>
+      </section>
+      <section class="card" id="pix" aria-labelledby="pix-titulo">
+        <div class="card-kicker"><span aria-hidden="true">02</span> SISTEMA DE PAGAMENTOS</div><h3 id="pix-titulo">Quem participa do PIX?</h3><p>Consulte as instituições participantes e seu tipo de participação. A lista inclui bancos e outras instituições de pagamento.</p>
+        <button class="pix-button" id="carregar-pix" type="button">Carregar participantes PIX <span aria-hidden="true">↓</span></button>
+        <p id="pix-status" class="status" role="status" aria-live="polite" aria-atomic="true">Clique em “Carregar participantes PIX” para consultar.</p>
+        <div id="pix-resultado" hidden><p id="pix-quantidade" class="result-count"></p><div class="table-scroll" tabindex="0" role="region" aria-label="Tabela de participantes do PIX, role para ver os resultados"><table><caption class="sr-only">Instituições participantes do PIX retornadas pela BrasilAPI</caption><thead><tr><th scope="col">Instituição</th><th scope="col">ISPB</th><th scope="col">Participação</th><th scope="col">Modalidade</th></tr></thead><tbody id="pix-corpo"></tbody></table></div></div>
+      </section>
+    </div>
+    <aside class="source-note"><span aria-hidden="true">ⓘ</span><p>Informação pública, consulta consciente. Os resultados vêm da <a href="https://brasilapi.com.br/" target="_blank" rel="noopener noreferrer">BrasilAPI</a> e dependem da disponibilidade do serviço.</p></aside>
+    <noscript><p class="status" data-state="error">Ative o JavaScript no navegador para fazer as consultas.</p></noscript>
+  </main>
+  <footer><div class="container footer-inner"><span class="footer-brand">Consulta Brasil<span aria-hidden="true"> ✦</span></span><p>Bruno Henrique Siemer | FDW | Avaliação A1.2 — Parte 1 | 2026.2</p></div></footer>
+</body>
+</html>
